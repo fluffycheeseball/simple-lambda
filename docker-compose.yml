@@ -1,0 +1,15 @@
+version: "3"
+# Each service is a docker container on the same host
+services:
+  go-backend: 
+    # Allow the container access to the host's terminal for input
+    stdin_open: true
+    # ...and output
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - default
+    
+  
