@@ -4,10 +4,103 @@ version: 2.1
 orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
+
+executors:
+  build:
+    docker:
+      - image: circleci/golang:1.16
+  publish:
+    docker:
+      - image: circleci/python:3.7
+
+commands: 
+  build_aws_credentials:
+    description: Create an aws credentials file and populate with circleci env parameters
+    steps:
+      - run: 
+          name: Ensure the credential file exists and is populated
+          command:  |
+            mkdir -p ~/.aws
+            echo "[default]" >> ~/.aws/config
+            echo region = $CIRCLECI_AWS_REGION >> ~/.aws/config
+            echo "[default]" >> ~/.aws/credentials
+            echo aws_access_key_id = $CIRCLECI_AWS_ACCESS_KEY_ID >>  ~/.aws/credentials
+            echo aws_access_secret_key = $CIRCLECI_AWS_ACCESS_SECRET_KEY >> ~/.aws/credentials
+
+jobs:
+  build:
+    executor: build
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-module-cache-{{ checksum "go.sum" }}
+      - run:
+          name: "run unit tests"
+          command: go test ./... -tags=integration -coverprofile=coverage.out
+      - run: go tool cover -html=coverage.out -o coverage.html
+      - run: go get -u golang.org/x/lint/golint
+      - run: golint -set_exit_status $(go list ./... | grep -v /vendor/)
+      - run: go vet $(go list ./... | grep -v /vendor/)
+      - save_cache:
+          key: go-module-cache-{{ checksum "go.sum" }}
+          paths:
+            - ~/.go_workspace/pkg/mod
+      - run: GOOS=linux go build -o app ./...
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+      - store_artifacts:
+          path: coverage.html
+
+  integration_test:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: .
+      - run: cp ./configs/ci.toml config.toml
+      - run: zip app.zip app config.toml
+      - run:
+          name: run ci integration script
+          command: |
+            ./scripts/ci_run_integration_tests.sh
+      - store_artifacts:
+          path: mochawesome-report
+          destination: report
+      - store_test_results:
+          path: test-results
+
+  deploy:
+    executor: publish
+    parameters:
+      deployenvironment:
+          type: string
+          default: "testing_env"
+    steps:
+      - attach_workspace:
+          at: .
+      - build_aws_credentials
+      - run: sudo pip install awscli
+      # copy 
+      - run: cp ./configs/<<parameters.deployenvironment>>.toml config.toml
+      - run: bash ./scripts/deploy.sh -e <<parameters.deployenvironment>>
+
 workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
+  version: 2
+  build_publish:
     jobs:
-      - welcome/run
+      - build:
+          context: org-global
+          filters:
+            tags:
+              only: /.*/
+
+      - deploy:
+          context: org-global
+          deployenvironment: testing_env
+          filters:
+            branches:
+              only: main
+            tags:
+              ignore: /release-.*/

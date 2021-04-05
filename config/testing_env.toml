@@ -1,0 +1,4 @@
+environment = "testing_env"
+
+[logs]
+level = "info"
