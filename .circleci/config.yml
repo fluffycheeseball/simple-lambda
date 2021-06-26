@@ -83,7 +83,7 @@ jobs:
       - build_aws_credentials
       - run: sudo pip install awscli
       # copy 
-      - run: cp ./configs/<<parameters.deployenvironment>>.toml config.toml
+      - run: cp ./config/<<parameters.deployenvironment>>.toml config.toml
       - run: bash ./scripts/deploy.sh -e <<parameters.deployenvironment>>
 
 workflows:
