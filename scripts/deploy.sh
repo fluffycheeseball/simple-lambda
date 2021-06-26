@@ -33,6 +33,6 @@ while getopts "r:e:h" arg; do
         ;;
     esac
 done
-shift "((OPTIND-1))
+shift "((OPTIND-1))"
 
 # Load global variables
