@@ -1,4 +1,5 @@
 environment = "testing_env"
+aws_region = "eu-west-2"
 
 [logs]
 level = "info"
