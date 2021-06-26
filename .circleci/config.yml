@@ -54,22 +54,22 @@ jobs:
       - store_artifacts:
           path: coverage.html
 
-  integration_test:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: .
-      - run: cp ./configs/ci.toml config.toml
-      - run: zip app.zip app config.toml
-      - run:
-          name: run ci integration script
-          command: |
-            ./scripts/ci_run_integration_tests.sh
-      - store_artifacts:
-          path: mochawesome-report
-          destination: report
-      - store_test_results:
-          path: test-results
+ # integration_test:
+ #   machine: true
+#    steps:
+#      - attach_workspace:
+ #         at: .
+ #     - run: cp ./config/ci.toml config.toml
+#      - run: zip app.zip app config.toml
+ #     - run:
+#          name: run ci integration script
+#          command: |
+ #           ./scripts/ci_run_integration_tests.sh
+ #     - store_artifacts:
+ #         path: mochawesome-report
+ #         destination: report
+#      - store_test_results:
+ #         path: test-results
 
   deploy:
     executor: publish
@@ -98,6 +98,8 @@ workflows:
 
       - deploy:
           context: JudeCircleCiContext
+          requires:
+            - build
           deployenvironment: testing_env
           filters:
             branches:
