@@ -1,7 +1,8 @@
 # Building
 
+` cd src
 
-` go build .~
+` go build .
 
 
 # Docker Testing
