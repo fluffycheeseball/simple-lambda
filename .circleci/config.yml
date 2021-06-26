@@ -79,7 +79,7 @@ jobs:
           default: "testing_env"
       awsRegion:
         type: string
-        default
+        default: "eu-west-2"
     steps:
       - attach_workspace:
           at: .
