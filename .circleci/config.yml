@@ -91,13 +91,13 @@ workflows:
   build_publish:
     jobs:
       - build:
-          context: org-global
+          context: JudeCircleCiContext
           filters:
             tags:
               only: /.*/
 
       - deploy:
-          context: org-global
+          context: JudeCircleCiContext
           deployenvironment: testing_env
           filters:
             branches:
