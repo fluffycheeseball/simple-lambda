@@ -21,7 +21,7 @@ environment="testing_env"
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
 while getopts "r:e:h" arg; do
-    case: $arg in
+    case $arg in
     r)
         aws_region=$OPTARG
         ;;
