@@ -50,4 +50,8 @@ cp deploy/infrastructure/${environment}.parameters.json /tmp/parameters.json
 cat /tmp/parameters.json
 
 # deploy the infrastucture stack
-. scripts/deploy_stack.sh -r ${aws_region}
+. scripts/deploy_stack.sh -s \
+-s ${infrastructure_stack_name} \
+-t "deploy/infrastructure/template.yml" \
+-p "tmp/parameters.json"
+-g

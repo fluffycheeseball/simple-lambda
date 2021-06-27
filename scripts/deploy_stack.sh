@@ -27,10 +27,10 @@ use_git_commit='false'
 OPTIND=1
 while getopts "s:t:p:g" arg; do
     case $arg in
-    r)
+    s)
         target_stack_name=$OPTARG
         ;;
-    e)
+    t)
         template_location=$OPTARG
         ;;
     p)
