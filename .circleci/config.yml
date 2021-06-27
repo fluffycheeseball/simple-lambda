@@ -31,7 +31,7 @@ jobs:
   build:
     executor: build
     steps:
-       run: echo "building Simple lambda" # run the `echo` command
+      - run: echo "building Simple lambda" # run the `echo` command
       - checkout
       - restore_cache:
           keys:
