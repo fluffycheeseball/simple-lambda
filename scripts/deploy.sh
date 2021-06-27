@@ -23,7 +23,7 @@ environment="test"
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 echo "input params: ${fred}"
 OPTIND=1
-while getopts ":r:e:h:" arg; do #yes that last h is needed - otherwise it fails to read 2nd environment parameter
+while getopts ":r:e:" arg; do #yes that last h is needed - otherwise it fails to read 2nd environment parameter
     case $arg in
     r)
         aws_region=$OPTARG
@@ -38,6 +38,7 @@ while getopts ":r:e:h:" arg; do #yes that last h is needed - otherwise it fails 
         echo "showing usage"
         ;;
     esac #case end marker
+    echo "arg: ${arg}"
 done
 shift "$((OPTIND-1))"
 
