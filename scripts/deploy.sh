@@ -3,7 +3,7 @@
 # -x = print line being executed to console
 set -ex
 
-function usage() {
+function show_usage() {
     cat <<EOF 
     #### deploy.sh ####
     Deploy 
@@ -22,7 +22,7 @@ environment="test"
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
-while getopts "r:e:h" arg; do
+while getopts ":r:e" arg; do #yes that last h is needed - otherwise it fails to read 2nd environment parameter
     case $arg in
     r)
         aws_region=$OPTARG
@@ -31,9 +31,9 @@ while getopts "r:e:h" arg; do
         environment=$OPTARG
         ;;
     *)
-        usage
+        show_usage
         ;;
-    esac
+    esac #case end marker
 done
 shift "$((OPTIND-1))"
 
