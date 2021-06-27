@@ -22,7 +22,7 @@ environment="test"
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
-while getopts "r:e" arg; do
+while getopts "r:e:h" arg; do
     case $arg in
     r)
         aws_region=$OPTARG
@@ -45,6 +45,7 @@ echo "target environment: ${environment} "
 
 # Add enviromment specific parameters
 cp deploy/infrastucture/${environment}.parameters.json /tmp/parameters.json
+cat /tmp/parameters.json
 
 # deploy the infrastucture stack
 . scripts/deploy_stack.sh
