@@ -24,21 +24,19 @@ environment="test"
 echo "input params: ${fred}"
 OPTIND=1
 while getopts ":r:e:" arg; do #yes that last h is needed - otherwise it fails to read 2nd environment parameter
+    echo "input argument: ${arg} : ${$OPTARG}"
     case $arg in
     r)
         aws_region=$OPTARG
-        echo "aws_region: ${aws_region}"
         ;;
     e)
         environment=$OPTARG
-        echo "environment: ${environment}"
         ;;
     *)
         show_usage
         echo "showing usage"
         ;;
     esac #case end marker
-    echo "arg: ${arg}"
 done
 shift "$((OPTIND-1))"
 
