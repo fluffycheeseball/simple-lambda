@@ -44,7 +44,7 @@ echo "target environment: ${environment} "
 . deploy/${environment}.config
 
 # Add enviromment specific parameters
-cp deploy/infrastucture/${environment}.parameters.json /tmp/parameters.json
+cp deploy/infrastructure/${environment}.parameters.json /tmp/parameters.json
 cat /tmp/parameters.json
 
 # deploy the infrastucture stack
