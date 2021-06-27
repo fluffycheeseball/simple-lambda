@@ -25,7 +25,7 @@ use_git_commit='false'
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
-while getopts "s:t:p:g" arg; do
+while getopts ":s:t:p:" arg; do
     case $arg in
     s)
         target_stack_name=$OPTARG
@@ -35,10 +35,7 @@ while getopts "s:t:p:g" arg; do
         ;;
     p)
         parameter_file_location=$OPTARG
-        ;;
-    g)
-        use_git_commit='true'
-        ;;        
+        ;;      
     *)
         usage
         ;;
