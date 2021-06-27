@@ -21,10 +21,9 @@ aws_region="eu-west-2"
 environment="test"
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
-echo "input params: ${fred}"
 OPTIND=1
 while getopts ":r:e:" arg; do #yes that last h is needed - otherwise it fails to read 2nd environment parameter
-    echo "input argument: ${arg} : ${$OPTARG}"
+    echo "input argument: ${arg} : ${OPTARG}"
     case $arg in
     r)
         aws_region=$OPTARG
