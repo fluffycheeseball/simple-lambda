@@ -31,6 +31,7 @@ jobs:
   build:
     executor: build
     steps:
+       run: echo "building Simple lambda" # run the `echo` command
       - checkout
       - restore_cache:
           keys:
@@ -87,7 +88,7 @@ jobs:
       - run: sudo pip install awscli
       # copy 
       - run: cp ./config/test.toml config.toml
-      - run: bash ./scripts/deploy.sh -e <<parameters.deployenvironment>> -r "eu-west-2"
+      - run: bash ./scripts/deploy.sh -e "test" -r "eu-west-2"
 
 workflows:
   version: 2
