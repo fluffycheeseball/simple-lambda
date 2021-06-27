@@ -52,3 +52,6 @@ echo "Using parameters: ${parameter_file_location}"
 echo "Using git commits: ${use_git_commit}"
 
 internal_param_file_location=parameters.json
+
+cp ${parameter_file_location} parameters.json.tmp 
+jq --arg gitsha ${CIRCLE_SHA1} --arg buildNumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, {"ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildNumber} ] ' <parameters.json.tmp > $internal_param_file_location

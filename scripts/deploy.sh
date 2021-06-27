@@ -55,3 +55,5 @@ cat /tmp/parameters.json
 -t "deploy/infrastructure/template.yml" \
 -p "tmp/parameters.json" \
 -g 'true'
+
+exit 0
