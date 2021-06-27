@@ -1,4 +1,4 @@
-environment = "testing_env"
+environment = "test"
 aws_region = "eu-west-2"
 
 [logs]

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# -e = exit on first failed line
+# -x = print line being executed to console
 set -ex
 
 function usage() {
@@ -20,7 +22,7 @@ environment="testing_env"
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
-while getopts "r:e:h" arg; do
+while getopts "r:e" arg; do
     case $arg in
     r)
         aws_region=$OPTARG
@@ -36,3 +38,10 @@ done
 shift "((OPTIND-1))"
 
 # Load global variables
+. deploy/${environment}.config
+
+# Add enviromment specific parameters
+cp deploy/infrastucture/${environment}.parameters.json
+
+# deploy the infrastucture stack
+. scripts/deploy_stack.sh

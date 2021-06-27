@@ -76,7 +76,7 @@ jobs:
     parameters:
       deployenvironment:
           type: string
-          default: "testing_env"
+          default: "test"
       awsRegion:
         type: string
         default: "eu-west-2"
@@ -103,7 +103,7 @@ workflows:
           context: JudeCircleCiContext
           requires:
             - build
-          deployenvironment: testing_env
+          deployenvironment: test
           filters:
             branches:
               only: main
