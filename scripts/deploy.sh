@@ -21,8 +21,8 @@ aws_region="eu-west-2"
 environment="test"
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
-
-echo "input params: ${getopts}"
+fred = getopts
+echo "input params: ${fred}"
 OPTIND=1
 while getopts ":r:e:h" arg; do #yes that last h is needed - otherwise it fails to read 2nd environment parameter
     case $arg in
