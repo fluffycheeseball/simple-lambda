@@ -18,7 +18,7 @@ exit 2
 
 # set defaults
 aws_region="eu-west-2"
-environment="testing_env"
+environment="test"
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
@@ -36,6 +36,9 @@ while getopts "r:e" arg; do
     esac
 done
 shift "$((OPTIND-1))"
+
+echo "aws region: ${aws_region}"
+echo "target evvironment: ${environment} "
 
 # Load global variables
 . deploy/${environment}.config
