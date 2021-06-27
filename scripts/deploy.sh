@@ -53,5 +53,5 @@ cat /tmp/parameters.json
 . scripts/deploy_stack.sh -s \
 -s ${infrastructure_stack_name} \
 -t "deploy/infrastructure/template.yml" \
--p "tmp/parameters.json"
+-p "tmp/parameters.json" \
 -g 'true'
