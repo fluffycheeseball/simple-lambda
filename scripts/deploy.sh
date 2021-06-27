@@ -22,7 +22,7 @@ environment="test"
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
-while getopts "r:e" arg; do
+while getopts "r:e:h" arg; do
     case $arg in
     r)
         aws_region=$OPTARG
@@ -38,7 +38,7 @@ done
 shift "$((OPTIND-1))"
 
 echo "aws region: ${aws_region}"
-echo "target evvironment: ${environment} "
+echo "target environment: ${environment} "
 
 # Load global variables
 . deploy/${environment}.config
