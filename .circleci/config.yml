@@ -86,8 +86,8 @@ jobs:
       - build_aws_credentials
       - run: sudo pip install awscli
       # copy 
-      - run: cp ./config/<<parameters.deployenvironment>>.toml config.toml
-      - run: bash ./scripts/deploy.sh -e <<parameters.deployenvironment>>
+      - run: cp ./config/test.toml config.toml
+      - run: bash ./scripts/deploy.sh -e <<parameters.deployenvironment>> -r "eu-west-2"
 
 workflows:
   version: 2
