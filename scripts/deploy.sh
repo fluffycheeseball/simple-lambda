@@ -22,7 +22,7 @@ environment="test"
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
-while getopts ":r:e" arg; do #yes that last h is needed - otherwise it fails to read 2nd environment parameter
+while getopts ":r:e:h" arg; do #yes that last h is needed - otherwise it fails to read 2nd environment parameter
     case $arg in
     r)
         aws_region=$OPTARG
