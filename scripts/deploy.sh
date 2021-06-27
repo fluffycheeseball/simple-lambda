@@ -52,7 +52,7 @@ cat /tmp/parameters.json
 # deploy the infrastucture stack
 . scripts/deploy_stack.sh -s ${infrastructure_stack_name} \
 -t "deploy/infrastructure/template.yml" \
--p "tmp/parameters.json" 
+-p "/tmp/parameters.json" 
 
 
 exit 0
