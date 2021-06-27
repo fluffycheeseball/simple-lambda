@@ -44,7 +44,7 @@ while getopts "s:t:p:g" arg; do
         ;;
     esac
 done
-shift "((OPTIND-1))"
+shift "$((OPTIND-1))"
 
 echo "Deploying stack: ${target_stack_name}"
 echo "Using template: ${template_location}"
