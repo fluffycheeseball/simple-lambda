@@ -50,13 +50,10 @@ echo "Using parameters: ${parameter_file_location}"
 internal_param_file_location=parameters.json
 
 # If we are stamping with git build numbers, copy the param file to a local location and amend it to include expected parameters for tags. Otherwise just copy to the output parameter location
-if ${use_git_commit}
-then
+
   cp ${parameter_file_location} parameters.json.tmp
   cat parameters.json.tmp
-  circle_json=jq --arg gitsha ${CIRCLE_SHA1} --arg buildnumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, { "ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildnumber } ]'
-  cat circle_json
-  jq --arg gitsha ${CIRCLE_SHA1} --arg buildnumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, { "ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildnumber } ]' < parameters.json.tmp > $internal_param_file_location
-else
-  cp ${parameter_file_location} $internal_param_file_location
-fi
+
+
+ jq --arg gitsha ${CIRCLE_SHA1} --arg buildnumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, { "ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildnumber } ]' < parameters.json.tmp > $internal_param_file_location
+ ${parameter_file_location} $internal_param_file_location
