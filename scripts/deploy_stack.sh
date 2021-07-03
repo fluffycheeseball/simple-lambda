@@ -53,6 +53,8 @@ internal_param_file_location=parameters.json
 if ${use_git_commit}
 then
   cp ${parameter_file_location} parameters.json.tmp
+  cat parameters.json.tmp
+  circle_json = jq --arg gitsha ${CIRCLE_SHA1} --arg buildnumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, { "ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildnumber } ]'
   jq --arg gitsha ${CIRCLE_SHA1} --arg buildnumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, { "ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildnumber } ]' < parameters.json.tmp > $internal_param_file_location
 else
   cp ${parameter_file_location} $internal_param_file_location
