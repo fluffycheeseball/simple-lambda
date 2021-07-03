@@ -48,7 +48,10 @@ echo "Using parameters: ${parameter_file_location}"
 
 internal_param_file_location=parameters.json
 
-cat ${parameter_file_location}
+cp ${parameter_file_location} parameters.json.tmp
+echo "parameters.json.tmp"
+cat ${parameters.json.tmp} 
 
-cp ${parameter_file_location} parameters.json.tmp 
+# merge the commit sha and build number into parameters.json.tmp and push the result into parameters.json
+
 jq --arg gitsha ${CIRCLE_SHA1} --arg buildnumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, {"ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildnumber} ] ' < parameters.json.tmp > $internal_param_file_location
