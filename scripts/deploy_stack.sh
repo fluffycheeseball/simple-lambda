@@ -56,4 +56,34 @@ internal_param_file_location=parameters.json
 
 
  jq --arg gitsha ${CIRCLE_SHA1} --arg buildnumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, { "ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildnumber } ]' < parameters.json.tmp > $internal_param_file_location
- ${parameter_file_location} $internal_param_file_location
+
+
+if aws ${aws_env_str} cloudformation describe-stacks --stack-name ${target_stack_name} 2>&1; then
+  
+  echo "Updating ${target_stack_name} ..."
+  template_parameters=$(jp --unquoted --filename /tmp/parameters.json "join(' ', @[].join('=', [ParameterKey, ParameterValue])[])")
+  
+  aws ${aws_env_str} cloudformation deploy \
+      --template-file ${template_location} \
+      --stack-name ${target_stack_name}  \
+      --parameter-overrides $template_parameters \
+      --capabilities CAPABILITY_NAMED_IAM \
+      --role-arn ${cloudformation_role} \
+      --no-fail-on-empty-changeset 
+
+else
+  echo "$target_stack_name does not exist. Creating..."
+  aws ${aws_env_str} cloudformation create-stack \
+    --stack-name "${target_stack_name}" \
+    --template-body "file://$template_location" \
+    --parameters "file://$internal_param_file_location" \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --role-arn "${cloudformation_role}"
+
+  echo "Waiting on $target_stack_name to be created..."
+  aws ${aws_env_str} cloudformation wait stack-create-complete --stack-name "$target_stack_name"
+fi
+
+echo "$target_stack_name operation complete"
+
+exit 0
