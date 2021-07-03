@@ -21,6 +21,7 @@ exit 2
 target_stack_name=""
 template_location=""
 parameter_file_location=""
+use_git_commit='true'
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
@@ -48,10 +49,11 @@ echo "Using parameters: ${parameter_file_location}"
 
 internal_param_file_location=parameters.json
 
-#cp ${parameter_file_location} parameters.json.tmp
-echo "parameters.json.tmp"
-cat ${parameters.json.tmp} 
-
-# merge the commit sha and build number into parameters.json.tmp and push the result into parameters.json
-
-jq --arg gitsha ${CIRCLE_SHA1} --arg buildnumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, {"ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildnumber} ] ' < ${parameter_file_location} > $internal_param_file_location
+# If we are stamping with git build numbers, copy the param file to a local location and amend it to include expected parameters for tags. Otherwise just copy to the output parameter location
+if ${use_git_commit}
+then
+  cp ${parameter_file_location} parameters.json.tmp
+  jq --arg gitsha ${CIRCLE_SHA1} --arg buildnumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, { "ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildnumber } ]' < parameters.json.tmp > $internal_param_file_location
+else
+  cp ${parameter_file_location} $internal_param_file_location
+fi
