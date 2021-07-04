@@ -22,6 +22,7 @@ target_stack_name=""
 template_location=""
 parameter_file_location=""
 use_git_commit='true'
+aws_env_str="--profile=test"
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
@@ -46,6 +47,7 @@ shift "$((OPTIND-1))"
 echo "Deploying stack: ${target_stack_name}"
 echo "Using template: ${template_location}"
 echo "Using parameters: ${parameter_file_location}"
+echo "aws_env_str" ${aws_env_str}
 
 internal_param_file_location=parameters.json
 
@@ -62,6 +64,7 @@ if aws ${aws_env_str} cloudformation describe-stacks --stack-name ${target_stack
   
   echo "Updating ${target_stack_name} ..."
   template_parameters=$(jp --unquoted --filename /tmp/parameters.json "join(' ', @[].join('=', [ParameterKey, ParameterValue])[])")
+  echo "template_parameters" ${template_parameters}
   
   aws ${aws_env_str} cloudformation deploy \
       --template-file ${template_location} \
