@@ -84,6 +84,6 @@ else
   aws ${aws_env_str} cloudformation wait stack-create-complete --stack-name "$target_stack_name"
 fi
 
-echo "$target_stack_name operation complete"
+echo "$target_stack_name stack deployment complete"
 
 exit 0
