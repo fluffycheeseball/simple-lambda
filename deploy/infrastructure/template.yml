@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Infrastructure for Simple Lambda
+Parameters: 
+  Client:
+    Type: String
+  Environment:
+    Type: String
+    Default: 'test'
+  Component:
+    Type: String
+    Default: 'Simple Lambda'
+  MyReadCapacityUnits:
+    Type: Number
+    Default: 5
+  MyWriteCapacityUnits:
+    Type: Number
+    Default: 5
+
+Resources:
+  Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${Client}-user-profile-${Environment}
+      AttributeDefinitions:
+         AttributeName: id
+        AttributeType: S
+        AttributeName: name
+        AttributeType: S
+      KeySchema:
+        AttributeName: id
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits:
+          Ref: MyReadCapacityUnits
+        WriteCapacityUnits:
+          Ref: MyWriteCapacityUnits
+
+Output:
+  TableArn:
+    Description: Table Arn
+    Value: !GetAtt Table.Arn
+    Export:
+      Name: !Sub ${Client}-user-profile-${Environment}       
+
+  
