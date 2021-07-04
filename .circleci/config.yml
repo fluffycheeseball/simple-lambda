@@ -17,6 +17,7 @@ commands:
   build_aws_credentials:
     description: Create an aws credentials file and populate with circleci env parameters
     steps:
+      - run: echo "getting aws credentials" # run the `echo` command
       - run: 
           name: Ensure the credential file exists and is populated
           command:  |
@@ -39,15 +40,23 @@ jobs:
       - run:
           name: "run unit tests"
           command: go test ./... -tags=integration -coverprofile=coverage.out
-      - run: go tool cover -html=coverage.out -o coverage.html
-      - run: go get -u golang.org/x/lint/golint
-      - run: golint -set_exit_status $(go list ./... | grep -v /vendor/)
+      - run: 
+          name: test coverage command
+          command:   go tool cover -html=coverage.out -o coverage.html
+      - run: 
+          name: get linting dependency
+          command: go get -u golang.org/x/lint/golint
+      - run: 
+          name: check code linting
+          command: golint -set_exit_status $(go list ./... | grep -v /vendor/)
       - run: go vet $(go list ./... | grep -v /vendor/)
       - save_cache:
           key: go-module-cache-{{ checksum "go.sum" }}
           paths:
             - ~/.go_workspace/pkg/mod
-      - run: GOOS=linux go build -o app ./...
+      - run:
+          name: precompile app
+          command: GOOS=linux go build -o app ./...
       - persist_to_workspace:
           root: .
           paths:
