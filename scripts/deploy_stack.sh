@@ -23,6 +23,8 @@ template_location=""
 parameter_file_location=""
 use_git_commit='true'
 aws_env_str="--profile=dockeruser"
+#The role that circleCi will assume that allows it to deploy stuff
+cloudformation_role="arn:aws:iam::311047760260:role/jude_circle_ci_cloudformation_role"
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
@@ -61,6 +63,7 @@ internal_param_file_location=parameters.json
 
 echo "internal_param_file_location" 
 cat $internal_param_file_location
+echo "checking target_stack_name ${target_stack_name}"
 
 if aws ${aws_env_str} cloudformation describe-stacks --stack-name ${target_stack_name} 2>&1; then
   
@@ -77,15 +80,19 @@ if aws ${aws_env_str} cloudformation describe-stacks --stack-name ${target_stack
       --no-fail-on-empty-changeset 
 
 else
-  echo "${target_stack_name} does not exist. Creating..."
+  echo "target_stack_name ${target_stack_name} does not exist"
   echo "template location ${template_location}"
   echo "internal_param_file_location ${internal_param_file_location}"
   echo "cloudformation_role ${cloudformation_role}"
-  cat ~/.aws/config 
+  echo "cred file"
+  cat ~/.aws/credentials
+  echo "config file"
+  cat ~/.aws/config
+
   aws ${aws_env_str} cloudformation create-stack \
     --stack-name "${target_stack_name}" \
     --template-body "file://$template_location" \
-    --parameters "file://$internal_param_file_location{" \
+    --parameters "file://$internal_param_file_location" \
     --capabilities CAPABILITY_NAMED_IAM \
     --role-arn "${cloudformation_role}"
 
