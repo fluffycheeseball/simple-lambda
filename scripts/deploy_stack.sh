@@ -22,7 +22,7 @@ target_stack_name=""
 template_location=""
 parameter_file_location=""
 use_git_commit='true'
-aws_env_str="--profile=test"
+aws_env_str="--profile=dockeruser"
 
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
@@ -54,11 +54,13 @@ internal_param_file_location=parameters.json
 # If we are stamping with git build numbers, copy the param file to a local location and amend it to include expected parameters for tags. Otherwise just copy to the output parameter location
 
   cp ${parameter_file_location} parameters.json.tmp
-  cat parameters.json.tmp
+
 
 
  jq --arg gitsha ${CIRCLE_SHA1} --arg buildnumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, { "ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildnumber } ]' < parameters.json.tmp > $internal_param_file_location
 
+echo "internal_param_file_location" 
+cat $internal_param_file_location
 
 if aws ${aws_env_str} cloudformation describe-stacks --stack-name ${target_stack_name} 2>&1; then
   
