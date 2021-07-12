@@ -18,7 +18,7 @@ commands:
     description: Create an aws credentials file and populate with circleci env parameters
     steps:
       - run: echo "getting aws credentials" # run the `echo` command
-      - run: echo $CIRCLECI_AWS_REGION
+      - run: echo ${CIRCLECI_AWS_REGION}
       - run: 
           name: Remove and recreate aws credentials file exists and is populated
           command:  |
