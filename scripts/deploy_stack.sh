@@ -80,7 +80,7 @@ if aws ${aws_env_str} cloudformation describe-stacks --stack-name ${target_stack
       --no-fail-on-empty-changeset 
 
 else
-  echo "target_stack_name ${target_stack_name} does not exist"
+  echo "Creating stack: ${target_stack_name}"
   echo "template location ${template_location}"
   echo "internal_param_file_location ${internal_param_file_location}"
   echo "cloudformation_role ${cloudformation_role}"
@@ -90,7 +90,7 @@ else
   cat ~/.aws/config
 
   aws ${aws_env_str} cloudformation create-stack \
-    --stack-name ${target_stack_name} \
+    --stack-name "${target_stack_name}" \
     --template-body "file://$template_location" \
     --parameters "file://$internal_param_file_location" \
     --capabilities CAPABILITY_NAMED_IAM \
