@@ -63,7 +63,6 @@ internal_param_file_location=parameters.json
 
 echo "internal_param_file_location" 
 cat $internal_param_file_location
-echo "checking target_stack_name ${target_stack_name}"
 
 if aws ${aws_env_str} cloudformation describe-stacks --stack-name ${target_stack_name} 2>&1; then
   
@@ -89,7 +88,7 @@ else
   echo "config file"
   cat ~/.aws/config
 
-  aws ${aws_env_str} cloudformation create-stack --stack-name $target_stack_name --template-body "file://$template_location" \
+  aws ${aws_env_str} cloudformation create-stack --stack-name ${target_stack_name} --template-body "file://$template_location" \
     --parameters "file://$internal_param_file_location" \
     --capabilities CAPABILITY_NAMED_IAM \
     --role-arn "${cloudformation_role}"
