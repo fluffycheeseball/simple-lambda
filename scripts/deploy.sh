@@ -41,6 +41,8 @@ shift "$((OPTIND-1))"
 
 echo "aws region: ${aws_region}"
 echo "target environment: ${environment} "
+# check something works
+aws iam list-groups
 
 # Load global variables
 . deploy/${environment}.config
