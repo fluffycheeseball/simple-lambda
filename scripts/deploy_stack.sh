@@ -64,7 +64,7 @@ internal_param_file_location=parameters.json
 echo "internal_param_file_location" 
 cat $internal_param_file_location
 
-aws $CIRCLECI_DEPLOYMENT_PROFILE_TEST cloudformation describe-stacks jude-temp-stack
+aws $DEPLOYMENT_PROFILE_TEST cloudformation describe-stacks jude-temp-stack
 
 # if aws ${aws_env_str} cloudformation describe-stacks --stack-name ${target_stack_name} 2>&1; then
   

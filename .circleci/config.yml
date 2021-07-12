@@ -18,7 +18,9 @@ commands:
     description: Create an aws credentials file and populate with circleci env parameters
     steps:
       - run: echo "getting aws credentials" # run the `echo` command
-      - run: echo $CIRCLE_BRANCH
+      - run:
+          name: "Setup custom environment variables"
+          command: echo 'export DEPLOYMENT_PROFILE_TEST="dockeruser"' >> $BASH_ENV
       - run: 
           name: Remove and recreate aws credentials file exists and is populated
           command:  |
@@ -32,6 +34,7 @@ commands:
             cat ~/.aws/credentials
             echo "config file"
             cat ~/.aws/config
+            echo ${DEPLOYMENT_PROFILE_TEST}
 
 jobs:
   build:
