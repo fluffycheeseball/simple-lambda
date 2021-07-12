@@ -29,7 +29,7 @@ commands:
             echo region = $CIRCLECI_AWS_REGION >> ~/.aws/config
             echo "[$DEPLOYMENT_PROFILE_TEST]" >> ~/.aws/credentials
             echo aws_access_key_id = $CIRCLECI_AWS_ACCESS_KEY_ID >>  ~/.aws/credentials
-            echo aws_access_secret_key = $CIRCLECI_AWS_ACCESS_SECRET_KEY >> ~/.aws/credentials
+            echo aws_secret_access_key = $CIRCLECI_AWS_ACCESS_SECRET_KEY >> ~/.aws/credentials
             echo "cred file"
             cat ~/.aws/credentials
             echo "config file"
