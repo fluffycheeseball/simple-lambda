@@ -22,7 +22,6 @@ target_stack_name=""
 template_location=""
 parameter_file_location=""
 use_git_commit='true'
-aws_env_str="--profile=dockeruser"
 #The role that circleCi will assume that allows it to deploy stuff
 cloudformation_role="arn:aws:iam::311047760260:role/jude_circle_ci_cloudformation_role"
 
@@ -49,7 +48,7 @@ shift "$((OPTIND-1))"
 echo "Deploying stack: ${target_stack_name}"
 echo "Using template: ${template_location}"
 echo "Using parameters: ${parameter_file_location}"
-echo "aws_env_str" ${aws_env_str}
+
 
 internal_param_file_location=parameters.json
 
@@ -63,32 +62,32 @@ internal_param_file_location=parameters.json
 
 # cat $internal_param_file_location
 
-aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation describe-stacks --stack-name jude-temp-stack
+# aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation describe-stacks --stack-name jude-temp-stack
 
-# if aws ${aws_env_str} cloudformation describe-stacks --stack-name ${target_stack_name} 2>&1; then
+if aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation describe-stacks --stack-name ${target_stack_name} 2>&1; then
   
-#   echo "Updating ${target_stack_name} ..."
-#   template_parameters=$(jp --unquoted --filename /tmp/parameters.json "join(' ', @[].join('=', [ParameterKey, ParameterValue])[])")
-#   echo "template_parameters" ${template_parameters}
+  echo "Updating ${target_stack_name} ..."
+  template_parameters=$(jp --unquoted --filename /tmp/parameters.json "join(' ', @[].join('=', [ParameterKey, ParameterValue])[])")
+  echo "template_parameters" ${template_parameters}
   
-#   aws ${aws_env_str} cloudformation deploy \
-#       --template-file ${template_location} \
-#       --stack-name ${target_stack_name}  \
-#       --parameter-overrides $template_parameters \
-#       --capabilities CAPABILITY_NAMED_IAM \
-#       --role-arn ${cloudformation_role} \
-#       --no-fail-on-empty-changeset 
+  aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation deploy \
+      --template-file ${template_location} \
+      --stack-name ${target_stack_name}  \
+      --parameter-overrides $template_parameters \
+      --capabilities CAPABILITY_NAMED_IAM \
+      --role-arn ${cloudformation_role} \
+      --no-fail-on-empty-changeset 
 
-# else
-#   aws ${aws_env_str} cloudformation create-stack --stack-name ${target_stack_name} --template-body "file://$template_location" \
-#     --parameters "file://$internal_param_file_location" \
-#     --capabilities CAPABILITY_NAMED_IAM \
-#     --role-arn "${cloudformation_role}"
+else
+  aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation create-stack --stack-name ${target_stack_name} --template-body "file://$template_location" \
+    --parameters "file://$internal_param_file_location" \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --role-arn "${cloudformation_role}"
 
-#   echo "Waiting on $target_stack_name to be created..."
-#   aws ${aws_env_str} cloudformation wait stack-create-complete --stack-name "$target_stack_name"
-# fi
+  echo "Waiting on $target_stack_name to be created..."
+  aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation wait stack-create-complete --stack-name "$target_stack_name"
+fi
 
-# echo "$target_stack_name stack deployment complete"
+echo "$target_stack_name stack deployment complete"
 
 exit 0
