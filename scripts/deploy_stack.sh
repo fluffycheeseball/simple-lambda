@@ -64,39 +64,32 @@ internal_param_file_location=parameters.json
 echo "internal_param_file_location" 
 cat $internal_param_file_location
 
-if aws ${aws_env_str} cloudformation describe-stacks --stack-name ${target_stack_name} 2>&1; then
+aws $CIRCLECI_DEPLOYMENT_PROFILE_TEST cloudformation describe-stacks jude-temp-stack
+
+# if aws ${aws_env_str} cloudformation describe-stacks --stack-name ${target_stack_name} 2>&1; then
   
-  echo "Updating ${target_stack_name} ..."
-  template_parameters=$(jp --unquoted --filename /tmp/parameters.json "join(' ', @[].join('=', [ParameterKey, ParameterValue])[])")
-  echo "template_parameters" ${template_parameters}
+#   echo "Updating ${target_stack_name} ..."
+#   template_parameters=$(jp --unquoted --filename /tmp/parameters.json "join(' ', @[].join('=', [ParameterKey, ParameterValue])[])")
+#   echo "template_parameters" ${template_parameters}
   
-  aws ${aws_env_str} cloudformation deploy \
-      --template-file ${template_location} \
-      --stack-name ${target_stack_name}  \
-      --parameter-overrides $template_parameters \
-      --capabilities CAPABILITY_NAMED_IAM \
-      --role-arn ${cloudformation_role} \
-      --no-fail-on-empty-changeset 
+#   aws ${aws_env_str} cloudformation deploy \
+#       --template-file ${template_location} \
+#       --stack-name ${target_stack_name}  \
+#       --parameter-overrides $template_parameters \
+#       --capabilities CAPABILITY_NAMED_IAM \
+#       --role-arn ${cloudformation_role} \
+#       --no-fail-on-empty-changeset 
 
-else
-  echo "Creating stack: ${target_stack_name}"
-  echo "template location ${template_location}"
-  echo "internal_param_file_location ${internal_param_file_location}"
-  echo "cloudformation_role ${cloudformation_role}"
-  echo "cred file"
-  cat ~/.aws/credentials
-  echo "config file"
-  cat ~/.aws/config
+# else
+#   aws ${aws_env_str} cloudformation create-stack --stack-name ${target_stack_name} --template-body "file://$template_location" \
+#     --parameters "file://$internal_param_file_location" \
+#     --capabilities CAPABILITY_NAMED_IAM \
+#     --role-arn "${cloudformation_role}"
 
-  aws ${aws_env_str} cloudformation create-stack --stack-name ${target_stack_name} --template-body "file://$template_location" \
-    --parameters "file://$internal_param_file_location" \
-    --capabilities CAPABILITY_NAMED_IAM \
-    --role-arn "${cloudformation_role}"
+#   echo "Waiting on $target_stack_name to be created..."
+#   aws ${aws_env_str} cloudformation wait stack-create-complete --stack-name "$target_stack_name"
+# fi
 
-  echo "Waiting on $target_stack_name to be created..."
-  aws ${aws_env_str} cloudformation wait stack-create-complete --stack-name "$target_stack_name"
-fi
-
-echo "$target_stack_name stack deployment complete"
+# echo "$target_stack_name stack deployment complete"
 
 exit 0
