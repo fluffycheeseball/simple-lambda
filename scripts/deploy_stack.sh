@@ -79,9 +79,8 @@ if aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation describe-stacks --stack
       --no-fail-on-empty-changeset 
 
 else
-  aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation create-stack \
-    --stack-name "jude-simple-lambda-infrastructure-stack-test-env" \
-    --template-body "file://$template_location" \
+  echo "creating..."
+  aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation create-stack  --stack-name "jude-simple-lambda-infrastructure-stack-test-env"  --template-body "file://$template_location" \
     --parameters "file://$internal_param_file_location" \
     --capabilities CAPABILITY_NAMED_IAM \
     --role-arn "${cloudformation_role}"
