@@ -90,7 +90,7 @@ else
   cat ~/.aws/config
 
   aws ${aws_env_str} cloudformation create-stack \
-    --stack-name "${target_stack_name}" \
+    --stack-name "jude-simple-lambda-infrastructure-stack-test-env" \
     --template-body "file://$template_location" \
     --parameters "file://$internal_param_file_location" \
     --capabilities CAPABILITY_NAMED_IAM \
