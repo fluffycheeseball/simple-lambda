@@ -3,6 +3,7 @@ Description: Infrastructure for Simple Lambda
 Parameters: 
   Client:
     Type: String
+    Default: 'client'
   Environment:
     Type: String
     Default: 'test'
