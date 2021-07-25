@@ -48,6 +48,7 @@ shift "$((OPTIND-1))"
 echo "Deploying stack: ${target_stack_name}"
 echo "Using template: ${template_location}"
 echo "Using parameters: ${parameter_file_location}"
+cat ${parameter_file_location}
 
 
 internal_param_file_location=parameters.json
