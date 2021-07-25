@@ -85,7 +85,7 @@ else
     --capabilities CAPABILITY_NAMED_IAM \
     --role-arn "${cloudformation_role}"
 
-  echo "Waiting on $target_stack_name to be created.."
+  echo "Waiting on $target_stack_name to be created."
   aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation wait stack-create-complete --stack-name "$target_stack_name"
 fi
 
