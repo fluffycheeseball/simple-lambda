@@ -80,7 +80,7 @@ if aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation describe-stacks --stack
 
 else
   echo "creating...2"
-  aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation create-stack  --stack-name "jude-simple-lambda-infrastructure-stack-test-env"  --template-body "file://$template_location" \
+  aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation create-stack  --stack-name ${target_stack_name}  --template-body "file://$template_location" \
     --parameters "file://$internal_param_file_location" \
     --capabilities CAPABILITY_NAMED_IAM \
     --role-arn "${cloudformation_role}"
