@@ -22,7 +22,7 @@ Resources:
     Properties:
       TableName: !Sub ${Client}-user-profile-${Environment}
       AttributeDefinitions:
-         AttributeName: id
+        AttributeName: id
         AttributeType: S
         AttributeName: name
         AttributeType: S
