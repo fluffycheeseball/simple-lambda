@@ -31,11 +31,9 @@ Resources:
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub ${Client}-user-profile-${Environment}
+      TableName: !Sub ${Client}-actions-tablearn-${Environment}
       AttributeDefinitions:
         - AttributeName: id
-          AttributeType: S
-        - AttributeName: name
           AttributeType: S
       KeySchema:
         - AttributeName: id
