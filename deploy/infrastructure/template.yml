@@ -3,7 +3,7 @@ Description: Infrastructure for Simple Lambda
 Parameters: 
   Client:
     Type: String
-    Description: The Client this is beng deployed for
+    Description: The Client this is beng deployed for 
     Default: 'client'
   Environment:
     Type: String
