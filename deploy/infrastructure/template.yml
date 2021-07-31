@@ -50,6 +50,6 @@ Outputs:
     Description: Table Arn
     Value: !GetAtt Table.Arn
     Export:
-      Name: !Sub ${Client}-${Component}-user-profile-${Environment}       
+      Name: !Sub ${Client}-actions-tablearn-${Environment}       
 
   
