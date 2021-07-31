@@ -84,10 +84,7 @@ if aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation describe-stacks --stack
 
 else
   echo "creating...2"
-  aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation create-stack  --stack-name "judeStack" --template-body "file://$template_location" \
-    --parameters "file://$internal_param_file_location" \
-    --capabilities CAPABILITY_NAMED_IAM \
-    --role-arn "${cloudformation_role}"
+  aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation create-stack  --stack-name "judeStack" --template-body "file://$template_location"  --parameters "file://$internal_param_file_location"  --capabilities CAPABILITY_NAMED_IAM  --role-arn "${cloudformation_role}"
 
   echo "Waiting on $target_stack_name to be created."
   aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation wait stack-create-complete --stack-name "$target_stack_name"
