@@ -50,6 +50,7 @@ echo "Using template: ${template_location}"
 echo "Using parameters: ${parameter_file_location}"
 cat ${parameter_file_location}
 
+cat {$CIRCLECI_AWS_REGION}
 
 internal_param_file_location=parameters.json
 
