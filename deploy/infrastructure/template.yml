@@ -7,6 +7,12 @@ Parameters:
   Environment:
     Type: String
     Default: 'test'
+  GitCommit:
+    Type: String
+    Description: sha value of commit being deployed
+  CircleCIBuildNumber:
+    Type: String
+    Description: circleCi build number for this deploy
   Component:
     Type: String
     Default: 'Simple Lambda'
