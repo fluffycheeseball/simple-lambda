@@ -7,6 +7,9 @@ Parameters:
   Environment:
     Type: String
     Default: 'test'
+  Component:
+    Type: String
+    Default: 'my-simple-lambda'
   GitCommit:
     Type: String
     Description: sha value of commit being deployed
@@ -42,11 +45,11 @@ Resources:
         WriteCapacityUnits:
           Ref: MyWriteCapacityUnits
 
-Output:
+Outputs:
   TableArn:
     Description: Table Arn
     Value: !GetAtt Table.Arn
     Export:
-      Name: !Sub ${Client}-user-profile-${Environment}       
+      Name: !Sub ${Client}-${Component}-user-profile-${Environment}       
 
   
