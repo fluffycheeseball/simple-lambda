@@ -64,7 +64,7 @@ internal_param_file_location=parameters.json
 
  jq --arg gitsha ${CIRCLE_SHA1} --arg buildnumber ${CIRCLE_BUILD_NUM} '. + [ { "ParameterKey":"GitCommit", "ParameterValue":$gitsha }, { "ParameterKey":"CircleCIBuildNumber", "ParameterValue":$buildnumber } ]' < parameters.json.tmp > $internal_param_file_location
 
-# cat $internal_param_file_location
+ cat $internal_param_file_location
 
 # aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation describe-stacks --stack-name jude-temp-stack
 
