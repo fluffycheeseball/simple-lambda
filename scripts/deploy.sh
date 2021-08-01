@@ -20,6 +20,8 @@ exit 2
 aws_region="eu-west-2"
 environment="test"
 
+ sudo apt-get -y -qq install jq 
+
 #read the input parametrs. OPTIND (option index) set to 1 so that all input parameters are read
 OPTIND=1
 while getopts ":r:e:" arg; do 
