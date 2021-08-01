@@ -46,7 +46,7 @@ jobs:
           keys:
             - go-module-cache-{{ checksum "go.sum" }}
       - run:
-          name: "run unit tests"
+          name: "run unit tests "
           command: go test ./... -tags=integration -coverprofile=coverage.out
       - run: 
           name: test coverage command
