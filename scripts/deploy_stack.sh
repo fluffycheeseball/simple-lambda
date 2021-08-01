@@ -70,7 +70,7 @@ internal_param_file_location=parameters.json
 
 if aws --profile=$DEPLOYMENT_PROFILE_TEST cloudformation describe-stacks --stack-name "judeStack" 2>&1; then
   
-  echo "Updating ${target_stack_name} ..."
+  echo "Updating stack ${target_stack_name} ..."
   template_parameters=$(jp --unquoted --filename /tmp/parameters.json "join(' ', @[].join('=', [ParameterKey, ParameterValue])[])")
   echo "template_parameters" ${template_parameters}
   
