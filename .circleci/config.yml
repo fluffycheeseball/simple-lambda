@@ -103,6 +103,7 @@ jobs:
           at: .
       - build_aws_credentials
       - run: sudo pip install awscli
+       -run: sudo apt-get -y -qq install jq 
       # copy 
       - run: cp ./config/test.toml config.toml
       - run: bash ./scripts/deploy.sh -r "eu-west-2" -e "test"
