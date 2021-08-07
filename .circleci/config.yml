@@ -101,8 +101,16 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run:
+          name: Install deploy prerequisites
+          command: |
+              sudo pip install awscli
       - build_aws_credentials
-      - run: sudo pip install awscli
+      - run:
+          name: Install Jmespath bash command
+          command: |
+              sudo wget https://github.com/jmespath/jp/releases/download/0.1.3/jp-linux-amd64 -O /usr/local/bin/jp && sudo chmod +x /usr/local/bin/jp      
+
       # copy 
       - run: cp ./config/test.toml config.toml
       - run: bash ./scripts/deploy.sh -r "eu-west-2" -e "test"
