@@ -52,7 +52,7 @@ echo "target environment: ${environment} "
 cp deploy/infrastructure/${environment}.parameters.json /tmp/parameters.json
 cat /tmp/parameters.json
 
-# deploy the infrastucture stack
+# deploy the infrastucture stack 
 . scripts/deploy_stack.sh -s ${infrastructure_stack_name} \
 -t "deploy/infrastructure/template.yml" \
 -p "/tmp/parameters.json" 
