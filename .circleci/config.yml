@@ -107,7 +107,7 @@ jobs:
               sudo pip install awscli
       - build_aws_credentials
       - run:
-          name: Install Jmespath bash command for jp command
+          name: Install Jmespath bash command. This is a json query library and used for jp command
           command: |
               sudo wget https://github.com/jmespath/jp/releases/download/0.1.3/jp-linux-amd64 -O /usr/local/bin/jp && sudo chmod +x /usr/local/bin/jp      
 
