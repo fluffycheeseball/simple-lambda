@@ -71,20 +71,21 @@ Resources:
         Version: "2008-10-17"
         Statement:
           - Action: s3:PutObject
-          # Prevent items not encrypted with AES256 from being put into bucket
-          Condition:
-            StringNotEquals:
-              s3:x-amz-server-side-encryption: AES256
-          Effect: Deny
-          # This applies to every user/role
-          Principal: "*"
-          # All folders in the bucket
-          Resource: !Sub ${MyBucket.Arn}/*
+            # Prevent items not encrypted with AES256 from being put into bucket
+            Condition:
+              StringNotEquals:
+                s3:x-amz-server-side-encryption: AES256
+            Effect: Deny
+            # This applies to every user/role
+            Principal: "*"
+             # All folders in the bucket
+            Resource: !Sub ${MyBucket.Arn}/*
           - Action: s3:PutObject
             # Prevent items not encrypted at all from being put into bucket
             Condition:
               "Null":
                 s3:x-amz-server-side-encryption: "true"
+            Effect: Deny
             Principal: "*"
             Resource: !Sub ${MyBucket.Arn}/*
         
