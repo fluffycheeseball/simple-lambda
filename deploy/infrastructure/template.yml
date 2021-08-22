@@ -48,7 +48,6 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub jude-${Client}-e4b5cc21-6284-4e93-82b3-f35e16ba6365-my-bucket-${Environment}
-      AttributeDefinitions:
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
