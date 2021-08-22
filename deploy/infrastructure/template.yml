@@ -33,10 +33,13 @@ Resources:
     Properties:
       TableName: !Sub ${Client}-actions-tablearn-${Environment}
       AttributeDefinitions:
-        - AttributeName: id
+        - AttributeId: id
           AttributeType: S
+        - AttributeName:
+          AttributeType: S
+        
       KeySchema:
-        - AttributeName: id
+        - AttributeId: id
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits:
@@ -44,11 +47,58 @@ Resources:
         WriteCapacityUnits:
           Ref: MyWriteCapacityUnits
 
+  MyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: Sub! jude-{client}-e4b5cc21-6284-4e93-82b3-f35e16ba6365-my-bucket--${Environment}
+      AttributeDefinitions:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+        # tags make it easier to determine the purpose of the resource within AWS      
+        Tags:
+        - Key: Environment
+        - Value: !Ref Environment
+        - Key: Client
+        - Value: !Ref Client
+
+  MyBucketPolicy:
+    Type: AWS:: S3::BucketPolicy
+    Properties:
+      Bucket: !Ref MyBucket
+      PolicyDocument:
+        Version: "2008-10-17"
+        Statement:
+          - Action: s3:PutObject
+          # Prevent items not encrypted with AES256 from being put into bucket
+          Condition:
+            StringNotEquals:
+              s3:x-amz-server-side-encryption: AES256
+          Effect: Deny
+          # This applies to every user/role
+          Principal: "*"
+          # All folders in the bucket
+          Resource: !Sub ${MyBucket.Arn}/*
+          - Action: s3:PutObject
+            # Prevent items not encrypted at all from being put into bucket
+            Condition:
+              "Null":
+                s3:x-amz-server-side-encryption: "true"
+            Principal: "*"
+            Resource: !Sub ${MyBucket.Arn}/*
+        
+
+
 Outputs:
   TableArn:
     Description: Table Arn
     Value: !GetAtt Table.Arn
     Export:
       Name: !Sub ${Client}-actions-tablearn-${Environment}       
-
+  BucketArn:
+    Description: MyBucket Arn
+    Value: !GetAtt MyBucket.Arn
+    Export:
+      Name: !Sub ${jude-{client}-e4b5cc21-6284-4e93-82b3-f35e16ba6365-my-bucket--${Environment}}
   
