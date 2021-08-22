@@ -50,7 +50,7 @@ Resources:
   MyBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: Sub! jude-${client}-e4b5cc21-6284-4e93-82b3-f35e16ba6365-my-bucket--${Environment}
+      BucketName: !Sub jude-${client}-e4b5cc21-6284-4e93-82b3-f35e16ba6365-my-bucket-${Environment}
       AttributeDefinitions:
       BucketEncryption:
         ServerSideEncryptionConfiguration:
@@ -101,5 +101,5 @@ Outputs:
     Description: MyBucket Arn
     Value: !GetAtt MyBucket.Arn
     Export:
-      Name: !Sub jude-${client}-e4b5cc21-6284-4e93-82b3-f35e16ba6365-my-bucket--${Environment}
+      Name: !Sub jude-${client}-e4b5cc21-6284-4e93-82b3-f35e16ba6365-my-bucket-${Environment}
   
