@@ -64,7 +64,7 @@ Resources:
         - Value: !Ref Client
 
   MyBucketPolicy:
-    Type: AWS:: S3::BucketPolicy
+    Type: AWS::S3::BucketPolicy
     Properties:
       Bucket: !Ref MyBucket
       PolicyDocument:
