@@ -53,11 +53,11 @@ Resources:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
       # tags make it easier to determine the purpose of the resource within AWS      
-      Tags:
-        - Key: Environment
-        - Value: !Ref Environment
-        - Key: Client
-        - Value: !Ref Client
+      # Tags:
+      #   - Key: Environment
+      #   - Value: !Ref Environment
+      #   - Key: Client
+      #   - Value: !Ref Client
 
   MyBucketPolicy:
     Type: AWS::S3::BucketPolicy
