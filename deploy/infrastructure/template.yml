@@ -35,7 +35,7 @@ Resources:
       AttributeDefinitions:
         - AttributeId: id
           AttributeType: S
-        - AttributeName:
+        - AttributeName: Name
           AttributeType: S
         
       KeySchema:
@@ -78,7 +78,7 @@ Resources:
             Effect: Deny
             # This applies to every user/role
             Principal: "*"
-             # All folders in the bucket
+            # All folders in the bucket
             Resource: !Sub ${MyBucket.Arn}/*
           - Action: s3:PutObject
             # Prevent items not encrypted at all from being put into bucket
